@@ -12,10 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class NewController {
-//    private final static String REPO_OWNER  = "Stefan-Vlastuin";
-//    private final static String REPO_NAME = "TestRepo";
-    private final static String REPO_OWNER  = "javaparser";
-    private final static String REPO_NAME = "javaparser";
+    private final static String REPO_OWNER  = "Stefan-Vlastuin";
+    private final static String REPO_NAME = "TestRepo";
+//    private final static String REPO_OWNER  = "javaparser";
+//    private final static String REPO_NAME = "javaparser";
     private final Repo repo;
 
     public NewController() throws IOException {
