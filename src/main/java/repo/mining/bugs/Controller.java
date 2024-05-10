@@ -35,26 +35,7 @@ public class Controller {
         params.put(Issues.Qualifier.STATE, "closed");
         Iterable<Issue> issues = repo.issues().search(Issues.Sort.CREATED, Search.Order.ASC, params);
 
-        try {
-            sleep(100);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        Limit.Smart limit = new Limit.Smart(github.limits().get("core"));
-        try {
-            System.out.println("limits after getting issues: " + limit.remaining());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
         for (Issue issue : issues) {
-            Limit.Smart limit2 = new Limit.Smart(github.limits().get("core"));
-            try {
-                System.out.println("limits before handling issue: " + limit2.remaining());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
             try {
                 if (isLabelledAsBug(issue) && isCompleted(issue) && !(new Issue.Smart(issue)).isPull()) { // Issues can be issues or PRs; here we only want issues.
                     logger.log("Bug issue " + issue.number());
@@ -62,13 +43,6 @@ public class Controller {
                 }
             } catch (IOException ignored) {
 
-            }
-
-            Limit.Smart limit3 = new Limit.Smart(github.limits().get("core"));
-            try {
-                System.out.println("limits after handling issue: " + limit3.remaining());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
         }
     }
@@ -97,35 +71,11 @@ public class Controller {
 
             // We have to use timeline here instead of events,
             // because the 'cross-referenced' event is only included in the timeline.
-            Limit.Smart limit3 = new Limit.Smart(github.limits().get("core"));
-            try {
-                System.out.println("limit before making timeline: " + limit3.remaining());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
             Timeline timeline = new Timeline(json.getString("timeline_url"), repo.json().getInt("id"), github);
-            Limit.Smart limit4 = new Limit.Smart(github.limits().get("core"));
-            try {
-                System.out.println("limit after making timeline: " + limit4.remaining());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
 
             // Since different projects organize their issues and pull requests in different ways,
             // we try to retrieve bugs both from linked pull requests and from linked commits.
-            Limit.Smart limit = new Limit.Smart(github.limits().get("core"));
-            try {
-                System.out.println("limit before getting linked PRs: " + limit.remaining());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
             findBugFilesFromPullRequests(timeline.getLinkedPullRequestIds(), pullRequests);
-            Limit.Smart limit2 = new Limit.Smart(github.limits().get("core"));
-            try {
-                System.out.println("limits after getting linked PRs: " + limit2.remaining());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
             findBugFilesFromCommits(timeline.getLinkedCommits(), commits);
         } catch (IOException ignored) {
 

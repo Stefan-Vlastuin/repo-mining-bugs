@@ -17,8 +17,8 @@ public class Main {
     private final static String REPO_USER = "javaparser";
     private final static String REPO_NAME = "javaparser";
     private final static String RESULT_PATH = "output/output.csv";
-    //private final static String BUG_LABEL = "Bug+report"; // Needs to be an exact match; adjust per project
-    private final static String BUG_LABEL = "bug"; // Needs to be an exact match; adjust per project
+    private final static String BUG_LABEL = "Bug+report"; // Needs to be an exact match; adjust per project
+    //private final static String BUG_LABEL = "bug"; // Needs to be an exact match; adjust per project
 
     public static void main(String[] args) {
         try {
@@ -39,12 +39,6 @@ public class Main {
 //            github = new RtGithub(key);
 //        }
 //
-//        Limit.Smart limit = new Limit.Smart(github.limits().get("core"));
-//        try {
-//            System.out.println("limits: " + limit.remaining());
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
 //
 //        Repo repo = github.repos().get(new Coordinates.Simple(REPO_USER, REPO_NAME));
 //        Controller controller = new Controller(repo, github);
