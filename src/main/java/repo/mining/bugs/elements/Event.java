@@ -10,12 +10,12 @@ public class Event {
     private Commit commit;
     private int repoId;
 
-    public Event(JsonObject jsonObject) throws IOException {
+    public Event(JsonObject jsonObject) {
         this.jsonObject = jsonObject;
         parseJson();
     }
 
-    private void parseJson() throws IOException {
+    private void parseJson() {
         this.event = jsonObject.getString("event");
 
         if (jsonObject.containsKey("source")){

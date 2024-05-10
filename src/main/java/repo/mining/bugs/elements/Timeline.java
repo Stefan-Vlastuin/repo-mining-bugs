@@ -18,7 +18,7 @@ public class Timeline {
         parseJson();
     }
 
-    private void parseJson() throws IOException {
+    private void parseJson() {
         for (JsonValue jsonValue : jsonArray) {
             events.add(new Event(jsonValue.asJsonObject()));
         }

@@ -9,7 +9,6 @@ import java.net.URL;
 public class ArrayRetriever {
 
     private final JsonArray jsonArray;
-    //private HttpURLConnection conn;
 
     public ArrayRetriever(String path) throws IOException {
         jsonArray = retrieveAllData(path);
@@ -20,9 +19,10 @@ public class ArrayRetriever {
         String key = System.getenv("GITHUB_API_KEY");
         String nextPage = path;
         while (nextPage != null){
+            HttpURLConnection conn = null;
             try {
                 URL url = new URL(nextPage);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn = (HttpURLConnection) url.openConnection();
                 if (conn != null && key != null && !key.isEmpty()){
                     conn.setRequestProperty("Authorization", "Bearer " + key);
                     conn.connect();
@@ -32,9 +32,9 @@ public class ArrayRetriever {
                     nextPage = getNextPage(conn);
                 }
             } finally {
-//                if (conn != null){
-//                    conn.disconnect();
-//                }
+                if (conn != null){
+                    conn.disconnect();
+                }
             }
         }
         return result.build();

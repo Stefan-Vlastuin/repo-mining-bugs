@@ -1,6 +1,5 @@
 package repo.mining.bugs.elements;
 
-import repo.mining.bugs.Connector;
 import repo.mining.bugs.ObjectRetriever;
 
 import javax.json.JsonObject;

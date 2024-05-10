@@ -8,7 +8,7 @@ import java.util.logging.SimpleFormatter;
 
 public class ProgressLogger {
 
-    private final String LOG_PATH = "logs/findBugs.log";
+    private final static String LOG_PATH = "logs/findBugs.log";
     private final Logger logger = Logger.getLogger("repo.mining.bugs");
     FileHandler fh;
     boolean writeToFile;

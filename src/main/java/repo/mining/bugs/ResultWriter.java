@@ -1,7 +1,5 @@
 package repo.mining.bugs;
 
-import repo.mining.bugs.elements.File;
-
 import java.io.IOException;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -12,47 +10,30 @@ public class ResultWriter {
     final String HEADER = "Filename;Count";
     BufferedWriter writer;
 
-    public ResultWriter(String path){
-        try {
-            this.writer = new BufferedWriter(new FileWriter(path));
-            writer.write(HEADER);
-            writer.newLine();
-        } catch (IOException ignore) {
+    public ResultWriter(String path) throws IOException {
+        this.writer = new BufferedWriter(new FileWriter(path));
+        writer.write(HEADER);
+        writer.newLine();
+    }
 
+    public void write(String fileName, int count) throws IOException {
+        writer.write(fileName + ";" + count);
+        writer.newLine();
+    }
+
+    public void write(Map<String, Integer> bugFiles) throws IOException {
+        for (Map.Entry<String, Integer> entry : bugFiles.entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue();
+            write(key, value);
         }
     }
 
-    public void write(String fileName, int count){
-        try {
-            writer.write(fileName + ";" + count);
-            writer.newLine();
-        } catch (IOException ignore) {
-
-        }
-    }
-
-    public void write(File file, int count){
-        try {
-            writer.write(file.getName() + ";" + count);
-            writer.newLine();
-        } catch (IOException ignore) {
-
-        }
-    }
-
-    public void write(Map<String, Integer> bugFiles){
-        bugFiles.forEach(this::write);
-    }
-
-//    public void write(Map<File, Integer> bugFiles){
-//        bugFiles.forEach(this::write);
-//    }
-
-    public void close(){
+    public void close() {
         try {
             writer.close();
-        } catch (IOException ignore) {
-
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
