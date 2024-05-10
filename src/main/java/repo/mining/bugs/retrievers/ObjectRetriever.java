@@ -1,4 +1,4 @@
-package repo.mining.bugs;
+package repo.mining.bugs.retrievers;
 
 import javax.json.Json;
 import javax.json.JsonObject;

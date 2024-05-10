@@ -1,6 +1,6 @@
 package repo.mining.bugs.elements;
 
-import repo.mining.bugs.ArrayRetriever;
+import repo.mining.bugs.retrievers.ArrayRetriever;
 
 import javax.json.JsonArray;
 import javax.json.JsonValue;

@@ -1,4 +1,4 @@
-package repo.mining.bugs;
+package repo.mining.bugs.retrievers;
 
 import javax.json.*;
 import java.io.IOException;

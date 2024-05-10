@@ -1,6 +1,6 @@
 package repo.mining.bugs.elements;
 
-import repo.mining.bugs.ObjectRetriever;
+import repo.mining.bugs.retrievers.ObjectRetriever;
 
 import javax.json.JsonObject;
 import java.io.IOException;

@@ -39,6 +39,10 @@ public class ProgressLogger {
         log(Level.INFO, message);
     }
 
+    public void log(Throwable throwable){
+        logger.log(Level.SEVERE, throwable.getMessage(), throwable);
+    }
+
     public void close(){
         if (writeToFile && fh != null) {
             fh.close();

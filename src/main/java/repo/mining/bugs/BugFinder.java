@@ -11,13 +11,14 @@ import java.util.Map;
 
 public class BugFinder {
     private final Repo repo;
+    private final ProgressLogger logger;
 
-    public BugFinder(String repoOwner, String repoName) throws IOException {
+    public BugFinder(String repoOwner, String repoName, ProgressLogger logger) throws IOException {
         repo = new Repo(repoOwner, repoName);
+        this.logger = logger;
     }
 
     public Map<String, Integer> findBugs(String bugLabel) throws IOException {
-        ProgressLogger logger = new ProgressLogger(true);
         Map<String, Integer> result = new HashMap<>();
         Issues issues = repo.getIssues("?state=closed&per_page=100&labels=" + bugLabel);
 
@@ -30,7 +31,6 @@ public class BugFinder {
             }
         }
 
-        logger.close();
         return result;
     }
 
