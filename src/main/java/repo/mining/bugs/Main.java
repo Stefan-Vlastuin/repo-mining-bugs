@@ -26,7 +26,7 @@ public class Main {
 
         LOGGER.log("Start with " + getRemainingLimit() + " remaining requests");
 
-        Map<String, Integer> bugFiles = null;
+        Map<Location, Integer> bugFiles = null;
         try {
             BugFinder bugFinder = new BugFinder(repoUser, repoName, LOGGER);
             bugFiles = bugFinder.findBugs(bugLabel);
@@ -45,7 +45,7 @@ public class Main {
         }
     }
 
-    public static void writeResults(Map<String, Integer> bugFiles) throws IOException {
+    public static void writeResults(Map<Location, Integer> bugFiles) throws IOException {
         ResultWriter resultWriter = new ResultWriter(RESULT_PATH);
         resultWriter.write(bugFiles);
         resultWriter.close();

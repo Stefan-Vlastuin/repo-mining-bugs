@@ -1,5 +1,7 @@
 package repo.mining.bugs.elements;
 
+import repo.mining.bugs.Location;
+
 import javax.json.JsonObject;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,25 +48,29 @@ public class Issue {
         return isPullRequest;
     }
 
-    public List<File> getChangedFiles(Repo repo) throws IOException {
+    public List<Location> getChangedFiles(Repo repo) throws IOException {
         if (timeline == null){
             timeline = new Timeline(jsonObject.getString("timeline_url"));
         }
 
-        List<File> changedFiles = new ArrayList<>();
+        List<Location> changedFiles = new ArrayList<>();
 
         // Method 1: via pull requests
         for (PullRequest pullRequest : timeline.getLinkedPullRequests(repo)){
             // We only consider closed and merged PRs, because they are more likely to be actual fixes.
             if (pullRequest.isClosed() && pullRequest.isMerged()) {
-                changedFiles.addAll(pullRequest.getChangedFiles().getFiles());
+                for (File f : pullRequest.getChangedFiles().getFiles()){
+                    changedFiles.add(new Location(f.getName(), pullRequest.getNumber()));
+                }
             }
         }
 
         // Method 2: via commits
         Commit commit = timeline.getClosingCommit();
         if (commit != null){
-            changedFiles.addAll(commit.getChangedFiles().getFiles());
+            for (File f : commit.getChangedFiles().getFiles()){
+                changedFiles.add(new Location(f.getName(), commit.getHash()));
+            }
         }
 
         return changedFiles;

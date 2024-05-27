@@ -8,6 +8,7 @@ import java.io.IOException;
 public class Commit {
     private final JsonObject jsonObject;
     private Files files;
+    private String hash;
 
     public Commit(String pathJson) throws IOException {
         ObjectRetriever objectRetriever = new ObjectRetriever(pathJson);
@@ -17,9 +18,12 @@ public class Commit {
 
     public void parseJson() {
         this.files = new Files(jsonObject.getJsonArray("files"));
+        this.hash = jsonObject.getString("sha");
     }
 
     public Files getChangedFiles() {
         return files;
     }
+
+    public String getHash() {return hash;}
 }

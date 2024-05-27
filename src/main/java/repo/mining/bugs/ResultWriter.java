@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class ResultWriter {
 
-    final String HEADER = "Filename;Count";
+    final String HEADER = "Filename;Commit;PullRequest;Count";
     BufferedWriter writer;
 
     public ResultWriter(String path) throws IOException {
@@ -16,14 +16,14 @@ public class ResultWriter {
         writer.newLine();
     }
 
-    public void write(String fileName, int count) throws IOException {
-        writer.write(fileName + ";" + count);
+    public void write(Location location, int count) throws IOException {
+        writer.write(location.fileName() + ";" + location.commitHash() + ";" + location.pullRequestNumber() + ";" + count);
         writer.newLine();
     }
 
-    public void write(Map<String, Integer> bugFiles) throws IOException {
-        for (Map.Entry<String, Integer> entry : bugFiles.entrySet()) {
-            String key = entry.getKey();
+    public void write(Map<Location, Integer> bugFiles) throws IOException {
+        for (Map.Entry<Location, Integer> entry : bugFiles.entrySet()) {
+            Location key = entry.getKey();
             Integer value = entry.getValue();
             write(key, value);
         }

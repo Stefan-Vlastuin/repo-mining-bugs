@@ -12,6 +12,7 @@ public class PullRequest {
     private Files files;
     private String state;
     private boolean merged;
+    private int number;
 
     public PullRequest(String pathJson) throws IOException {
         ObjectRetriever objectRetriever = new ObjectRetriever(pathJson);
@@ -23,6 +24,7 @@ public class PullRequest {
         this.url = jsonObject.getString("url");
         this.state = jsonObject.getString("state");
         this.merged = jsonObject.getBoolean("merged");
+        this.number = jsonObject.getInt("number");
     }
 
     public Files getChangedFiles() throws IOException {
@@ -40,5 +42,7 @@ public class PullRequest {
     public boolean isMerged(){
         return merged;
     }
+
+    public int getNumber(){return number;}
 
 }
