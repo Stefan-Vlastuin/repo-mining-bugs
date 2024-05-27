@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class ResultWriter {
 
-    final String HEADER = "Filename;Commit;PullRequest;Count";
+    final String HEADER = "FileName;Commit;PullRequest;Count";
     BufferedWriter writer;
 
     public ResultWriter(String path) throws IOException {
