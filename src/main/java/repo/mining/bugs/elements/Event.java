@@ -24,7 +24,7 @@ public class Event {
         }
     }
 
-    public PullRequest getPullRequest() throws IOException {
+    public PullRequest getPullRequest() throws IOException, InterruptedException {
         if (pullRequest == null) {
             if (jsonObject.containsKey("source")){
                 JsonObject issue = jsonObject.getJsonObject("source").getJsonObject("issue");
@@ -36,7 +36,7 @@ public class Event {
         return pullRequest;
     }
 
-    public Commit getCommit() throws IOException {
+    public Commit getCommit() throws IOException, InterruptedException {
         if (commit == null){
             if (jsonObject.containsKey("commit_url") && !jsonObject.isNull("commit_url")){
                 this.commit = new Commit(jsonObject.getString("commit_url"));

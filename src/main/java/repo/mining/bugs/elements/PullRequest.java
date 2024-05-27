@@ -14,7 +14,7 @@ public class PullRequest {
     private boolean merged;
     private int number;
 
-    public PullRequest(String pathJson) throws IOException {
+    public PullRequest(String pathJson) throws IOException, InterruptedException {
         ObjectRetriever objectRetriever = new ObjectRetriever(pathJson);
         jsonObject = objectRetriever.getJsonObject();
         parseJson();
@@ -27,7 +27,7 @@ public class PullRequest {
         this.number = jsonObject.getInt("number");
     }
 
-    public Files getChangedFiles() throws IOException {
+    public Files getChangedFiles() throws IOException, InterruptedException {
         if (files == null){
             ArrayRetriever arrayRetriever = new ArrayRetriever(url + "/files");
             files = new Files(arrayRetriever.getJsonArray());

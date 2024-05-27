@@ -13,7 +13,7 @@ public class Repo {
     private Issues issues;
     private int id;
 
-    public Repo(String owner, String repoName) throws IOException {
+    public Repo(String owner, String repoName) throws IOException, InterruptedException {
         String pathJson = baseUrl + owner + "/" + repoName;
         ObjectRetriever objectRetriever = new ObjectRetriever(pathJson);
         jsonObject = objectRetriever.getJsonObject();
@@ -25,7 +25,7 @@ public class Repo {
         this.id = jsonObject.getInt("id");
     }
 
-    public Issues getIssues(String queryParameters) throws IOException {
+    public Issues getIssues(String queryParameters) throws IOException, InterruptedException {
         if (issues == null){
             issues = new Issues(issues_url, queryParameters);
         }

@@ -12,7 +12,7 @@ public class Timeline {
     private final JsonArray jsonArray;
     private final List<Event> events = new ArrayList<>();
 
-    public Timeline(String pathJson) throws IOException {
+    public Timeline(String pathJson) throws IOException, InterruptedException {
         ArrayRetriever arrayRetriever = new ArrayRetriever(pathJson);
         jsonArray = arrayRetriever.getJsonArray();
         parseJson();
@@ -24,7 +24,7 @@ public class Timeline {
         }
     }
 
-    public List<PullRequest> getLinkedPullRequests(Repo repo) throws IOException {
+    public List<PullRequest> getLinkedPullRequests(Repo repo) throws IOException, InterruptedException {
         List<PullRequest> pullRequests = new ArrayList<>();
         for (Event event : events) {
             if (event.getEvent().equals("cross-referenced") && event.getPullRequest() != null && event.sameRepo(repo)) {
@@ -34,7 +34,7 @@ public class Timeline {
         return pullRequests;
     }
 
-    public Commit getClosingCommit() throws IOException {
+    public Commit getClosingCommit() throws IOException, InterruptedException {
         for (Event event : events) {
             if (event.getEvent().equals("closed")) {
                 return event.getCommit(); // Can be null!

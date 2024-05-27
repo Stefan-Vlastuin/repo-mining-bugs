@@ -1,8 +1,7 @@
 package repo.mining.bugs;
 
-import repo.mining.bugs.retrievers.ObjectRetriever;
+import repo.mining.bugs.retrievers.RateLimit;
 
-import javax.json.JsonObject;
 import java.io.IOException;
 import java.util.Map;
 
@@ -13,7 +12,8 @@ public class Main {
     // TODO: option to only include files from certain directories? (to filter out test files or non-Java files)
 
     private final static String RESULT_PATH = "output/output.csv";
-    private final static ProgressLogger LOGGER = new ProgressLogger(true);
+    private final static ProgressLogger LOGGER = ProgressLogger.getInstance();
+    private static RateLimit rateLimit = null;
 
     public static void main(String[] args) {
         if (args.length != 3) {
@@ -24,13 +24,14 @@ public class Main {
         String repoName = args[1];
         String bugLabel = args[2]; // Needs to be exact match!
 
-        LOGGER.log("Start with " + getRemainingLimit() + " remaining requests");
-
         Map<Location, Integer> bugFiles = null;
         try {
+            rateLimit = RateLimit.getInstance();
+            LOGGER.log("Start with " + rateLimit.getRemainingRequests() + " remaining requests");
+
             BugFinder bugFinder = new BugFinder(repoUser, repoName, LOGGER);
             bugFiles = bugFinder.findBugs(bugLabel);
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             LOGGER.log(e);
         } finally {
             try {
@@ -40,7 +41,9 @@ public class Main {
             } catch (IOException e) {
                 LOGGER.log(e);
             }
-            LOGGER.log("End with " + getRemainingLimit() + " remaining requests");
+            if (rateLimit != null) {
+                LOGGER.log("End with " + rateLimit.getRemainingRequests() + " remaining requests");
+            }
             LOGGER.close();
         }
     }
@@ -49,16 +52,6 @@ public class Main {
         ResultWriter resultWriter = new ResultWriter(RESULT_PATH);
         resultWriter.write(bugFiles);
         resultWriter.close();
-    }
-
-    public static int getRemainingLimit() {
-        try {
-            ObjectRetriever objectRetriever = new ObjectRetriever("https://api.github.com/rate_limit");
-            JsonObject jsonObject = objectRetriever.getJsonObject();
-            return jsonObject.getJsonObject("resources").getJsonObject("core").getInt("remaining");
-        } catch (IOException e) {
-            return -1;
-        }
     }
 
 }

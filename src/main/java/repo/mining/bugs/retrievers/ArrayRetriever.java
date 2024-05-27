@@ -9,16 +9,18 @@ import java.net.URL;
 public class ArrayRetriever {
 
     private final JsonArray jsonArray;
+    private final RateLimit rateLimit = RateLimit.getInstance();
 
-    public ArrayRetriever(String path) throws IOException {
+    public ArrayRetriever(String path) throws IOException, InterruptedException {
         jsonArray = retrieveAllData(path);
     }
 
-    private JsonArray retrieveAllData(String path) throws IOException {
+    private JsonArray retrieveAllData(String path) throws IOException, InterruptedException {
         JsonArrayBuilder result = Json.createArrayBuilder();
         String key = System.getenv("GITHUB_API_KEY");
         String nextPage = path;
         while (nextPage != null){
+            rateLimit.makeRequest();
             HttpURLConnection conn = null;
             try {
                 URL url = new URL(nextPage);

@@ -48,7 +48,7 @@ public class Issue {
         return isPullRequest;
     }
 
-    public List<Location> getChangedFiles(Repo repo) throws IOException {
+    public List<Location> getChangedFiles(Repo repo) throws IOException, InterruptedException {
         if (timeline == null){
             timeline = new Timeline(jsonObject.getString("timeline_url"));
         }

@@ -12,12 +12,12 @@ public class BugFinder {
     private final Repo repo;
     private final ProgressLogger logger;
 
-    public BugFinder(String repoOwner, String repoName, ProgressLogger logger) throws IOException {
+    public BugFinder(String repoOwner, String repoName, ProgressLogger logger) throws IOException, InterruptedException {
         repo = new Repo(repoOwner, repoName);
         this.logger = logger;
     }
 
-    public Map<Location, Integer> findBugs(String bugLabel) throws IOException {
+    public Map<Location, Integer> findBugs(String bugLabel) throws IOException, InterruptedException {
         Map<Location, Integer> result = new HashMap<>();
         Issues issues = repo.getIssues("?state=closed&per_page=100&labels=" + bugLabel);
 

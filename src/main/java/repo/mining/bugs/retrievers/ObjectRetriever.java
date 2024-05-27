@@ -12,13 +12,15 @@ public class ObjectRetriever {
 
     private final JsonObject jsonObject;
     private HttpURLConnection conn;
+    private final RateLimit rateLimit = RateLimit.getInstance();
 
-    public ObjectRetriever(String path) throws IOException {
+    public ObjectRetriever(String path) throws IOException, InterruptedException {
         jsonObject = retrieveData(path);
     }
 
-    private JsonObject retrieveData(String path) throws IOException {
+    private JsonObject retrieveData(String path) throws IOException, InterruptedException {
         try {
+            rateLimit.makeRequest();
             URL url = new URL(path);
             conn = (HttpURLConnection) url.openConnection();
             String key = System.getenv("GITHUB_API_KEY");

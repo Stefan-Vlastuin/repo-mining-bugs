@@ -10,7 +10,7 @@ public class Commit {
     private Files files;
     private String hash;
 
-    public Commit(String pathJson) throws IOException {
+    public Commit(String pathJson) throws IOException, InterruptedException {
         ObjectRetriever objectRetriever = new ObjectRetriever(pathJson);
         jsonObject = objectRetriever.getJsonObject();
         parseJson();

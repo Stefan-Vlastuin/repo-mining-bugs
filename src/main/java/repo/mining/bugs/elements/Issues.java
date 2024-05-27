@@ -11,7 +11,7 @@ public class Issues {
     private final JsonArray jsonArray;
     private final ArrayList<Issue> issues = new ArrayList<>();
 
-    public Issues(String pathJson, String queryParameters) throws IOException {
+    public Issues(String pathJson, String queryParameters) throws IOException, InterruptedException {
         ArrayRetriever arrayRetriever = new ArrayRetriever(pathJson + queryParameters);
         jsonArray = arrayRetriever.getJsonArray();
         parseJson();
