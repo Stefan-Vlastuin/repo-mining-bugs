@@ -1,6 +1,5 @@
 package repo.mining.bugs;
 
-import repo.mining.bugs.elements.File;
 import repo.mining.bugs.elements.Issue;
 import repo.mining.bugs.elements.Issues;
 import repo.mining.bugs.elements.Repo;
