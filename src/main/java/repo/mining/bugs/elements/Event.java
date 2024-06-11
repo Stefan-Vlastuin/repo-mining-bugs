@@ -8,6 +8,7 @@ public class Event {
     private String event;
     private PullRequest pullRequest;
     private Commit commit;
+    private String commitUrl;
     private int repoId;
 
     public Event(JsonObject jsonObject) {
@@ -21,6 +22,10 @@ public class Event {
         if (jsonObject.containsKey("source")){
             JsonObject issue = jsonObject.getJsonObject("source").getJsonObject("issue");
             this.repoId = issue.getJsonObject("repository").getInt("id");
+        }
+
+        if (jsonObject.containsKey("commit_url") && !jsonObject.isNull("commit_url")){
+            this.commitUrl = jsonObject.getString("commit_url");
         }
     }
 
@@ -38,8 +43,8 @@ public class Event {
 
     public Commit getCommit() throws IOException, InterruptedException {
         if (commit == null){
-            if (jsonObject.containsKey("commit_url") && !jsonObject.isNull("commit_url")){
-                this.commit = new Commit(jsonObject.getString("commit_url"));
+            if (commitUrl != null){
+                this.commit = new Commit(commitUrl);
             }
         }
         return commit;
@@ -49,8 +54,20 @@ public class Event {
         return event;
     }
 
-    public boolean sameRepo(Repo repo){
+    public boolean sameRepo(Repo repo, boolean checkCommit){
+        if (checkCommit){
+            if (commitUrl == null){
+                return false;
+            }
+            // For a commit, we do not have the repoId, so we check on repo owner and name
+            return commitUrl.contains(repo.getOwner() + "/" + repo.getName());
+        }
+
         return repo.getId() == this.repoId;
+    }
+
+    public boolean sameRepo(Repo repo){
+        return sameRepo(repo, false);
     }
 
 }

@@ -33,10 +33,6 @@ public class Issue {
         }
     }
 
-    public boolean isBugReport(){
-        return labels.containsSubstring("bug");
-    }
-
     public boolean isCompleted(){
         if (stateReason == null){
             return false;
@@ -66,7 +62,7 @@ public class Issue {
         }
 
         // Method 2: via commits
-        Commit commit = timeline.getClosingCommit();
+        Commit commit = timeline.getClosingCommit(repo);
         if (commit != null){
             for (File f : commit.getChangedFiles().getFiles()){
                 changedFiles.add(new Location(f.getName(), commit.getHash()));

@@ -8,12 +8,16 @@ import java.io.IOException;
 public class Repo {
 
     private final static String baseUrl = "https://api.github.com/repos/";
+    private final String owner;
+    private final String name;
     private final JsonObject jsonObject;
     private String issues_url;
     private Issues issues;
     private int id;
 
     public Repo(String owner, String repoName) throws IOException, InterruptedException {
+        this.owner = owner;
+        this.name = repoName;
         String pathJson = baseUrl + owner + "/" + repoName;
         ObjectRetriever objectRetriever = new ObjectRetriever(pathJson);
         jsonObject = objectRetriever.getJsonObject();
@@ -35,5 +39,9 @@ public class Repo {
     public int getId(){
         return id;
     }
+
+    public String getOwner(){return owner;}
+
+    public String getName(){return name;}
 
 }

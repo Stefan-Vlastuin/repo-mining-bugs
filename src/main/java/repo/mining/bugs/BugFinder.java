@@ -22,7 +22,7 @@ public class BugFinder {
         Issues issues = repo.getIssues("?state=closed&per_page=100&labels=" + bugLabel);
 
         for (Issue issue : issues.getIterable()) {
-            if (issue.isBugReport() && issue.isCompleted() && !issue.isPullRequest()){ // Issues can be issues or PRs; here we only want issues.
+            if (issue.isCompleted() && !issue.isPullRequest()){ // Issues can be issues or PRs; here we only want issues.
                 for (Location location : issue.getChangedFiles(repo)){
                     logger.log("Bug issue " + issue.getNumber() + " changed file " + location.fileName());
                     result.merge(location, 1, Integer::sum);

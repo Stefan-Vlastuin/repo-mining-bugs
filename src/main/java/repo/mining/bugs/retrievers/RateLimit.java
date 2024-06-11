@@ -19,7 +19,7 @@ public class RateLimit {
     private final static String LIMIT_URL = "https://api.github.com/rate_limit";
     private final static ProgressLogger logger = ProgressLogger.getInstance();
 
-    private RateLimit() throws IOException, InterruptedException {
+    private RateLimit() throws IOException {
         remainingRequests = retrieveLimit("remaining");
     }
 
@@ -33,10 +33,12 @@ public class RateLimit {
     public void makeRequest() throws InterruptedException, IOException {
         if (remainingRequests <= 0) {
             int resetTime = retrieveLimit("reset");
-            long timeToWait = calculateTimeToWait(resetTime);
+            logger.log("Reset time: " + resetTime);
+            long timeToWait = calculateTimeToWait(resetTime) + 10; // 10 extra seconds to be sure
             logger.log("Waiting " + timeToWait + " s to get new requests");
             sleep(timeToWait * 1000); // In ms
             remainingRequests = retrieveLimit("remaining");
+            logger.log("Remaining requests after waiting: " + remainingRequests);
         }
 
         remainingRequests--;

@@ -34,9 +34,9 @@ public class Timeline {
         return pullRequests;
     }
 
-    public Commit getClosingCommit() throws IOException, InterruptedException {
+    public Commit getClosingCommit(Repo repo) throws IOException, InterruptedException {
         for (Event event : events) {
-            if (event.getEvent().equals("closed")) {
+            if (event.getEvent().equals("closed") && event.sameRepo(repo, true)) {
                 return event.getCommit(); // Can be null!
             }
         }
